@@ -1,0 +1,92 @@
+﻿
+using System.Collections.Generic;
+using System;
+
+namespace EvolutionalAlgorithmsExample.Core
+{
+    public class Chromosome
+    {
+        Genome[] Genomes;
+
+
+        public double FitnessScore { get; set; }
+
+        public double Probability { get; set; }
+        public double CumulativeProbability { get; set; }
+        public Chromosome()
+        {
+            Genomes = new Genome[TestFunction.VariableCount];
+            for (int i = 0; i < Genomes.Length; i++)
+            {
+                Genomes[i] = new Genome();
+            }
+
+        }
+
+
+        public void CrossOver(Chromosome other, int genomeIndex, int nucleotideIndex)
+        {
+            bool[] temp = new bool[nucleotideIndex];
+
+            for (int i = 0; i < nucleotideIndex; i++)
+            {
+                temp[i] = Genomes[genomeIndex].nucleotides[i];
+                Genomes[genomeIndex].nucleotides[i] = other.Genomes[genomeIndex].nucleotides[i];
+                other.Genomes[genomeIndex].nucleotides[i] = temp[i];
+            }
+        }
+
+        public void Mutation(double probability)
+        {
+            for (int i = 0; i < Genomes.Length; i++)
+            {
+                Genomes[i].Mutate(probability);
+            }
+        }
+
+
+        public Chromosome Copy()
+        {
+            Chromosome newChromosome = new Chromosome();
+            for (int i = 0; i < Genomes.Length; i++)
+            {
+                newChromosome.Genomes[i] = Genomes[i];
+            }
+           
+            return newChromosome;
+        }
+        public double CalculateFitnessScore()
+        {
+            FitnessScore = TestFunction.Eval(Genomes[0].Value, Genomes[1].Value);
+            return FitnessScore;
+        }
+    }
+
+
+    public class ChromosomeComparerbyProbability : IComparer<Chromosome>
+    {
+        public int Compare(Chromosome x, Chromosome y)
+        {
+            if (x == null || y == null)
+            {
+                throw new ArgumentException("Arguments cannot be null");
+            }
+
+            return x.Probability.CompareTo(y.Probability);
+        }
+    }
+
+    public class ChromosomeComparerbyFitnessScore : IComparer<Chromosome>
+    {
+        public int Compare(Chromosome x, Chromosome y)
+        {
+            if (x == null || y == null)
+            {
+                throw new ArgumentException("Arguments cannot be null");
+            }
+
+            return x.FitnessScore.CompareTo(y.FitnessScore);
+        }
+    }
+}
+
