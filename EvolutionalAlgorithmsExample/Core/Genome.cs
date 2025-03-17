@@ -29,7 +29,7 @@ namespace EvolutionalAlgorithmsExample.Core
         {
             for (int i = 0; i < TestFunction.BitCount; i++)
             {
-                if (RandomGenerator.random.NextDouble()  < probability)
+                if (RandomGenerator.random.NextDouble() < probability)
                 {
                     nucleotides[i] = !nucleotides[i];
                 }
@@ -46,8 +46,8 @@ namespace EvolutionalAlgorithmsExample.Core
         }
 
 
-       
-        
+
+
 
         public override string ToString()
         {
@@ -70,6 +70,16 @@ namespace EvolutionalAlgorithmsExample.Core
                 }
             }
             return result;
+        }
+
+        public Genome Copy()
+        {
+            Genome newGenome = new Genome();
+            for (int i = 0; i < TestFunction.BitCount; i++)
+            {
+                newGenome.nucleotides[i] = nucleotides[i];
+            }
+            return newGenome;
         }
     }
 }

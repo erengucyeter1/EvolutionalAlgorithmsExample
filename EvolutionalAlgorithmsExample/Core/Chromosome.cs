@@ -1,6 +1,7 @@
 ﻿
 using System.Collections.Generic;
 using System;
+using System.Text;
 
 namespace EvolutionalAlgorithmsExample.Core
 {
@@ -8,11 +9,12 @@ namespace EvolutionalAlgorithmsExample.Core
     {
         Genome[] Genomes;
 
-
         public double FitnessScore { get; set; }
 
         public double Probability { get; set; }
         public double CumulativeProbability { get; set; }
+
+        public int Lenght { get { return Genomes.Length; } }
         public Chromosome()
         {
             Genomes = new Genome[TestFunction.VariableCount];
@@ -26,6 +28,8 @@ namespace EvolutionalAlgorithmsExample.Core
 
         public void CrossOver(Chromosome other, int genomeIndex, int nucleotideIndex)
         {
+           
+
             bool[] temp = new bool[nucleotideIndex];
 
             for (int i = 0; i < nucleotideIndex; i++)
@@ -50,7 +54,7 @@ namespace EvolutionalAlgorithmsExample.Core
             Chromosome newChromosome = new Chromosome();
             for (int i = 0; i < Genomes.Length; i++)
             {
-                newChromosome.Genomes[i] = Genomes[i];
+                newChromosome.Genomes[i] = Genomes[i].Copy();
             }
            
             return newChromosome;
@@ -59,6 +63,31 @@ namespace EvolutionalAlgorithmsExample.Core
         {
             FitnessScore = TestFunction.Eval(Genomes[0].Value, Genomes[1].Value);
             return FitnessScore;
+        }
+
+
+        public string[] GetGenomesAsString()
+        {
+            string[] strGenomes = new String[Lenght];
+
+            for (int i = 0; i < Genomes.Length; i++)
+            {
+                strGenomes[i] = Genomes[i].ToString();
+                
+               
+            }
+
+            return strGenomes;
+        }
+
+        public double[] GetGenomesAsDouble()
+        {
+            double[] doubleGenomes = new double[Lenght];
+            for (int i = 0; i < Genomes.Length; i++)
+            {
+                doubleGenomes[i] = Genomes[i].Value;
+            }
+            return doubleGenomes;
         }
     }
 

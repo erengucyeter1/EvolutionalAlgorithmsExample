@@ -28,7 +28,9 @@ namespace EvolutionalAlgorithmsExample.Core
 
         public double WorstScore { get; set; }
 
-        
+        Chromosome BestChromosome;
+
+
 
 
         private double SumOfFitness;
@@ -73,6 +75,7 @@ namespace EvolutionalAlgorithmsExample.Core
         private void SetScores()
         {
             BestScore = population[0].FitnessScore;
+
             WorstScore = population[population.Count - 1].FitnessScore;
             AverageScore = CalculateAverageScore();
 
@@ -123,9 +126,10 @@ namespace EvolutionalAlgorithmsExample.Core
         }
         private void AddElits(int ElitismCount)
         {
+            population.Sort(new ChromosomeComparerbyFitnessScore());
             for (int i = 0; i < ElitismCount; i++)
             {
-                population.Add(population[i]);
+                newPopulation.Add(population[i].Copy());
             }
         }
         private void RouletteSelection(int TournamentCount, int ElitismCount)

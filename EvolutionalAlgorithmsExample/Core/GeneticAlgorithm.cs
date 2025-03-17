@@ -48,6 +48,8 @@ namespace EvolutionalAlgorithmsExample.Core
                 });
                 await Task.Yield();
             }
+
+            chartHelper.DisplayBestChromosome(population);
         }
     }
 

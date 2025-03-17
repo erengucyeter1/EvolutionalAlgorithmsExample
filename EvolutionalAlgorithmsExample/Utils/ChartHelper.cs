@@ -1,24 +1,23 @@
 ﻿using EvolutionalAlgorithmsExample.Core;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace EvolutionalAlgorithmsExample.Utils
 {
 
     public delegate void DrawLinesDelegate(int index, Population population);
 
+    public delegate void DisplayBestChromosomeDelegate(Population population);
+
     internal class ChartHelper
     {
         public Chart ProgressChart { get; set; }
 
         DrawLinesDelegate DrawLines;
+        DisplayBestChromosomeDelegate DisplayBestChromosomeDelegate;
         public ChartHelper()
         {
             ProgressChart = DrawChart();
@@ -41,7 +40,7 @@ namespace EvolutionalAlgorithmsExample.Utils
                 }
             }
 
-            ProgressChart.ChartAreas[0].AxisY.Maximum = maxY * 1.1;
+            ProgressChart.ChartAreas[0].AxisY.Maximum = (maxY+ 0.1) * 1.1;
 
         }
 
@@ -55,7 +54,7 @@ namespace EvolutionalAlgorithmsExample.Utils
 
             // label for display settings
             Label settingsLabel = new Label();
-            settingsLabel.Size = new Size(80, 600);
+            settingsLabel.Size = new Size(140, 600);
             settingsLabel.Location = new Point(810, 0);
 
             // Checkboxes for display settings
@@ -153,12 +152,28 @@ namespace EvolutionalAlgorithmsExample.Utils
             };
             ScrollXAxis.Checked = false;
 
+            Panel bestChormosomePanel = new Panel();
+            bestChormosomePanel.Size = new Size(112, 450);
+            bestChormosomePanel.Location = new Point(0, 130); // Relative to settingsLabel
+            
+
+            DisplayBestChromosomeDelegate += (Population population) =>
+            {
+                DisplayChromosomePanel displayChromosomePanel = new DisplayChromosomePanel(population.population[0]);
+
+                bestChormosomePanel.Controls.Clear();
+                bestChormosomePanel.Controls.Add(displayChromosomePanel.GetDisplayPanel());
+
+            };
+
+
 
 
             settingsLabel.Controls.Add(bestScoreCheckBox);
             settingsLabel.Controls.Add(averageScoreCheckBox);
             settingsLabel.Controls.Add(worstScoreCheckBox);
             settingsLabel.Controls.Add(ScrollXAxis);
+            settingsLabel.Controls.Add(bestChormosomePanel);
 
             // form
             Form form = new Form();
@@ -265,12 +280,6 @@ namespace EvolutionalAlgorithmsExample.Utils
         }
 
 
-        /*public void UpdateChart(int i, Population population)
-        {
-            DrawLines?.Invoke(i, population);
-            ProgressChart.Invalidate();
-            ProgressChart.Update();
-        }*/
 
         public void UpdateChart(int i, Population population)
         {
@@ -284,6 +293,12 @@ namespace EvolutionalAlgorithmsExample.Utils
                 ProgressChart.Invalidate();
                 ProgressChart.Update();
             }
+        }
+
+
+        public void DisplayBestChromosome(Population population)
+        {
+            DisplayBestChromosomeDelegate?.Invoke(population);
         }
 
     }

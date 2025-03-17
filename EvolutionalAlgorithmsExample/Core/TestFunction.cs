@@ -22,10 +22,7 @@ namespace EvolutionalAlgorithmsExample.Core
              return Math.Pow(Math.Sin(3 * Math.PI * x), 2) + (Math.Pow((x - 1), 2) * (1 + (Math.Pow(Math.Sin(3 * Math.PI * y), 2)))) + ( (Math.Pow(y-1,2)) * (1 + (Math.Pow(Math.Sin(2*Math.PI*y),2)))) ;
          }
 
-       /* public static double Eval(double x, double y)
-        {
-            return Math.Pow((x + (2*y) - 7), 2) + Math.Pow(((2 * x) + y - 5), 2);
-        }*/
+       
 
 
     }

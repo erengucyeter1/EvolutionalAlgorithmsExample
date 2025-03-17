@@ -48,6 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Chromosome.cs" />
+    <Compile Include="Core\DisplayChromosomePanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Utils\ChartHelper.cs" />
     <Compile Include="Utils\EnumSelectionType.cs" />
     <Compile Include="Core\GeneticAlgorithm.cs" />
