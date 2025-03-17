@@ -9,40 +9,34 @@ namespace EvolutionalAlgorithmsExample.Core
 {
     public class Genome
     {
-        public bool[] nucleotides;
+        public Nucleotide[] nucleotides;
 
-        public double Value
+        public Genome(GenomeSchema[] genomeSchemas)
         {
-            get
+            nucleotides = new Nucleotide[genomeSchemas.Length];
+            for (int i = 0; i < genomeSchemas.Length; i++)
             {
-                return TestFunction.Min + ((this.ToInt() * TestFunction.Range) / (Math.Pow(2, TestFunction.BitCount) - 1));
+                nucleotides[i] = genomeSchemas[i].CreateNewNucleotide();
             }
         }
 
-        public Genome()
+        private Genome(Genome src)
         {
-            Randomize();
+            nucleotides = new Nucleotide[src.nucleotides.Length];
         }
 
 
         public void Mutate(double probability)
         {
-            for (int i = 0; i < TestFunction.BitCount; i++)
+            foreach (Nucleotide temp in nucleotides)
             {
-                if (RandomGenerator.random.NextDouble() < probability)
-                {
-                    nucleotides[i] = !nucleotides[i];
-                }
+                temp.Mutate(probability);
             }
         }
 
         private void Randomize()
         {
-            nucleotides = new bool[TestFunction.BitCount];
-            for (int i = 0; i < TestFunction.BitCount; i++)
-            {
-                nucleotides[i] = RandomGenerator.random.Next(0, 2) == 1;
-            }
+            
         }
 
 
@@ -52,32 +46,23 @@ namespace EvolutionalAlgorithmsExample.Core
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < TestFunction.BitCount; i++)
+            foreach(Nucleotide temp in nucleotides)
             {
-                sb.Append(nucleotides[i] ? "1" : "0");
+                sb.Append(temp.ToString());
+
             }
+
             return sb.ToString();
         }
 
-        private int ToInt()
-        {
-            int result = 0;
-            for (int i = 0; i < TestFunction.BitCount; i++)
-            {
-                if (nucleotides[i])
-                {
-                    result += (int)Math.Pow(2, i);
-                }
-            }
-            return result;
-        }
 
         public Genome Copy()
         {
-            Genome newGenome = new Genome();
-            for (int i = 0; i < TestFunction.BitCount; i++)
+            Genome newGenome = new Genome(this);
+
+            for (int i = 0; i < this.nucleotides.Length; i++)
             {
-                newGenome.nucleotides[i] = nucleotides[i];
+                newGenome.nucleotides[i] = this.nucleotides[i].Copy();
             }
             return newGenome;
         }

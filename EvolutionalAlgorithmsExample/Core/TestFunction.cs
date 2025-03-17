@@ -8,21 +8,65 @@ namespace EvolutionalAlgorithmsExample.Core
 {
     internal class TestFunction
     {
-        public static int VariableCount { get; } = 2;
-        public static int Min { get; } = -10;
-        public static int Max { get; } = 10;
-        public static double Range { get; } = Max - Min;
+
+
         public static int Sensivity { get; } = 1000;
 
-        public static int BitCount { get; } =  (int) Math.Ceiling(Math.Log((double)(Max - Min) * Sensivity, 2));
 
 
-        public static double Eval(double x, double y)
-         {
-             return Math.Pow(Math.Sin(3 * Math.PI * x), 2) + (Math.Pow((x - 1), 2) * (1 + (Math.Pow(Math.Sin(3 * Math.PI * y), 2)))) + ( (Math.Pow(y-1,2)) * (1 + (Math.Pow(Math.Sin(2*Math.PI*y),2)))) ;
-         }
+        // NO 9
+        /*
+        public static GenomeSchema XSchema { get; } = new GenomeSchema(variableName:"X", min:-10, max:10);
+        public static GenomeSchema YSchema { get; } = new GenomeSchema(variableName: "Y", min: -10, max: 10);
 
-       
+        public static GenomeSchema[] genomeSchemas = new GenomeSchema[] { XSchema, YSchema };
+
+        public static double Eval(Genome p)
+        {
+            double x = p.nucleotides[0].Value;
+            double y = p.nucleotides[1].Value;
+            return Math.Pow(Math.Sin(3 * Math.PI * x), 2) + (Math.Pow((x - 1), 2) * (1 + (Math.Pow(Math.Sin(3 * Math.PI * y), 2)))) + ((Math.Pow(y - 1, 2)) * (1 + (Math.Pow(Math.Sin(2 * Math.PI * y), 2))));
+        }
+         */
+
+
+        // NO 7
+        /*
+        public static GenomeSchema XSchema { get; } = new GenomeSchema(variableName: "X", min: -15, max: 5);
+        public static GenomeSchema YSchema { get; } = new GenomeSchema(variableName: "Y", min: -3, max: 3);
+
+        public static GenomeSchema[] genomeSchemas = new GenomeSchema[] { XSchema, YSchema };
+
+        public static double Eval(Genome p) // Statik olarak işaretlendi
+        {
+            double x = p.nucleotides[0].Value;
+            double y = p.nucleotides[1].Value;
+
+            double part1 = 100.0 * (Math.Sqrt(Math.Abs(y - (0.01 * Math.Pow(x, 2)))));
+            double part2 = (0.01 * (Math.Abs(x + 10)));
+            double result = part1 + part2;
+
+            return result;
+        }
+        */
+
+
+        // No 0
+
+        public static GenomeSchema XSchema { get; } = new GenomeSchema(variableName: "X", min: -5, max: 5);
+        public static GenomeSchema YSchema { get; } = new GenomeSchema(variableName: "Y", min: -5, max: 5);
+
+        public static GenomeSchema[] genomeSchemas = new GenomeSchema[] { XSchema, YSchema };
+
+        public static double Eval(Genome p) // Statik olarak işaretlendi
+        {
+            double x = p.nucleotides[0].Value;
+            double y = p.nucleotides[1].Value;
+
+
+            return (2 * Math.Pow(x, 2) - (1.05 * Math.Pow(x, 4))  + (Math.Pow(x,6)/6.0) + (x * y) + (Math.Pow(y,2)));
+        }
+
 
 
     }

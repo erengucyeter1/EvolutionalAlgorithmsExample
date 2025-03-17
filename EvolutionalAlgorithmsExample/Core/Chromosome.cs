@@ -7,44 +7,69 @@ namespace EvolutionalAlgorithmsExample.Core
 {
     public class Chromosome
     {
-        Genome[] Genomes;
+        Genome Genome;
 
         public double FitnessScore { get; set; }
 
         public double Probability { get; set; }
         public double CumulativeProbability { get; set; }
 
-        public int Lenght { get { return Genomes.Length; } }
+        public int Lenght { get { return Genome.nucleotides.Length; } }
         public Chromosome()
         {
-            Genomes = new Genome[TestFunction.VariableCount];
-            for (int i = 0; i < Genomes.Length; i++)
-            {
-                Genomes[i] = new Genome();
-            }
+            Genome = new Genome(TestFunction.genomeSchemas);
 
         }
 
-
-        public void CrossOver(Chromosome other, int genomeIndex, int nucleotideIndex)
+        private void SwapGenes(Chromosome other, int index)
         {
-           
+            bool[] temp = new bool[Genome.nucleotides[index].bits.Length];
+            
+            int randPoint = RandomGenerator.random.Next(0, Genome.nucleotides[index].bits.Length);
+
+            this.Genome.nucleotides[index].bits.CopyTo(temp, 0);
+
+            for (int i = randPoint; i < Genome.nucleotides[index].bits.Length; i++)
+            {
+                this.Genome.nucleotides[index].bits[i] = other.Genome.nucleotides[index].bits[i];
+                other.Genome.nucleotides[index].bits[i] = temp[i];
+            }
+        }
+
+        public void CrossOver(Chromosome other, double CrossOverRate)
+        {
+
+            for (int i = 0; i < this.Genome.nucleotides.Length; i++)
+            {
+                if(RandomGenerator.random.NextDouble() < CrossOverRate)
+                {
+                    SwapGenes(other, i);
+                }
+            }
+
+
+
+
+
+
+
+            /*
 
             bool[] temp = new bool[nucleotideIndex];
 
-            for (int i = 0; i < nucleotideIndex; i++)
+            for (int i = 0; i < Genome.nucleotides.Length; i++)
             {
-                temp[i] = Genomes[genomeIndex].nucleotides[i];
-                Genomes[genomeIndex].nucleotides[i] = other.Genomes[genomeIndex].nucleotides[i];
-                other.Genomes[genomeIndex].nucleotides[i] = temp[i];
-            }
+                temp[i] = Genome.nucleotides[i].bits[i];
+                Genome.nucleotides[genomeIndex].bits[i] = other.Genome.nucleotides[genomeIndex].bits[i];
+                other.Genome.nucleotides[genomeIndex].bits[i] = temp[i];
+            }*/
         }
 
         public void Mutation(double probability)
         {
-            for (int i = 0; i < Genomes.Length; i++)
+            for (int i = 0; i < Genome.nucleotides.Length; i++)
             {
-                Genomes[i].Mutate(probability);
+                Genome.nucleotides[i].Mutate(probability);
             }
         }
 
@@ -52,16 +77,16 @@ namespace EvolutionalAlgorithmsExample.Core
         public Chromosome Copy()
         {
             Chromosome newChromosome = new Chromosome();
-            for (int i = 0; i < Genomes.Length; i++)
-            {
-                newChromosome.Genomes[i] = Genomes[i].Copy();
-            }
+
+            
+             newChromosome.Genome = Genome.Copy();
+            
            
             return newChromosome;
         }
         public double CalculateFitnessScore()
         {
-            FitnessScore = TestFunction.Eval(Genomes[0].Value, Genomes[1].Value);
+            FitnessScore = TestFunction.Eval(Genome);
             return FitnessScore;
         }
 
@@ -70,9 +95,9 @@ namespace EvolutionalAlgorithmsExample.Core
         {
             string[] strGenomes = new String[Lenght];
 
-            for (int i = 0; i < Genomes.Length; i++)
+            for (int i = 0; i < Genome.nucleotides.Length; i++)
             {
-                strGenomes[i] = Genomes[i].ToString();
+                strGenomes[i] = Genome.nucleotides[i].ToString();
                 
                
             }
@@ -83,9 +108,9 @@ namespace EvolutionalAlgorithmsExample.Core
         public double[] GetGenomesAsDouble()
         {
             double[] doubleGenomes = new double[Lenght];
-            for (int i = 0; i < Genomes.Length; i++)
+            for (int i = 0; i < Genome.nucleotides.Length; i++)
             {
-                doubleGenomes[i] = Genomes[i].Value;
+                doubleGenomes[i] = Genome.nucleotides[i].Value;
             }
             return doubleGenomes;
         }

@@ -50,35 +50,42 @@ namespace EvolutionalAlgorithmsExample.Core
             {
                 Panel temp = new Panel();
 
-                Label label3 = new Label();
-                label3.Text = "Genome " + i.ToString();
-                label3.Location = new Point(5, 5);
-                temp.Controls.Add(label3);
-
-                Label label4 = new Label();
-                label4.Text = "Gens:";
-                label4.Location = new Point(5, 27);
-                temp.Controls.Add(label4);
-
-                Label label5 = new Label();
-                label5.Text = genomes[i];
-                label5.Location = new Point(3, 49);
-                temp.Controls.Add(label5);
-
                 Label label6 = new Label();
                 label6.Text = "Value:";
-                label6.Location = new Point(5, 72);
+                label6.Location = new Point(5, 5);
+                label6.Height = 18;
                 temp.Controls.Add(label6);
-
-          
 
 
                 TextBox valTextBox = new TextBox();
                 valTextBox.Text = values[i].ToString("F12");
-                valTextBox.Location = new Point(5, 95);
+                valTextBox.Location = new Point(5, 27);
                 valTextBox.Width = 90;
                 valTextBox.ReadOnly = true;
                 temp.Controls.Add(valTextBox);
+
+
+                Label label1 = new Label();
+                label1.Text = "Genome:";
+                label1.Location = new Point(5, 50);
+                label1.AutoSize = true;
+
+                temp.Controls.Add(label1);
+
+
+                Panel GenomeScroolPanel = new Panel();
+                GenomeScroolPanel.AutoScroll = true;
+                GenomeScroolPanel.Width = 90;
+                GenomeScroolPanel.Height = 40;
+                GenomeScroolPanel.Location = new Point(5, 70);
+
+                Label label5 = new Label();
+                label5.Text = genomes[i];
+                label5.AutoSize = true;
+                label5.Location = new Point(0,0);
+                GenomeScroolPanel.Controls.Add(label5);
+                temp.Controls.Add(GenomeScroolPanel);
+
 
                 temp.Location = new Point(5, 80 + i * 130);
                 temp.BorderStyle = BorderStyle.FixedSingle;

@@ -229,22 +229,8 @@ namespace EvolutionalAlgorithmsExample.Core
 
         }
         private void CrossOver(double CrossOverRate, Chromosome p1, Chromosome p2)
-        {
-            double randomValue;
-
-            for (int i = 0; i < TestFunction.VariableCount; i++)
-            {
-                randomValue = RandomGenerator.random.NextDouble();
-
-                if (randomValue < CrossOverRate)
-                {
-                    
-                    p1.CrossOver(p2, i, TestFunction.BitCount);
-
-
-                }
-
-            }
+        {              
+        p1.CrossOver(p2, CrossOverRate);
         }
         
         
